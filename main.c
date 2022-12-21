@@ -6,31 +6,16 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:56:36 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 10:14:53 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:21:22 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	print(t_philo *philo, unsigned long time, char *action)
-{
-	pthread_mutex_lock(philo->print);
-	printf("%lums, %d %s\n", time, philo->id, action);
-}
-
-void	clean_mutex(t_philo *philo)
-{
-	int	i;
-
-	i = 0;
-	while (i < philo->data->num_philo)
-		pthread_mutex_destroy(&philo->mutex[i++]);
-}
-
 void	*action(void *philo_void)
 {
 	t_philo	*philo;
-	
+
 	philo = (t_philo *)philo_void;
 	if (philo->id % 2 == 0)
 		usleep(10);
@@ -54,6 +39,7 @@ void	*action(void *philo_void)
 		print(philo, get_time() - philo->data->time, "is thinking");
 	}
 }
+
 void	live_and_die(t_philo *philo, t_const_philo *data)
 {
 	int	i;
@@ -78,7 +64,7 @@ void	live_and_die(t_philo *philo, t_const_philo *data)
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_const_philo	*data;
 	t_philo			*philo;
@@ -95,12 +81,13 @@ int main(int argc, char **argv)
 	else
 		return (printf("ERROR\n"), 1);
 	philo = (t_philo *)malloc(sizeof(t_philo) * data->num_philo);
-	if	(!philo)
+	if (!philo)
 		return (0);
 	init_parameters(philo, data);
+	printf("TIME BEFORE DYING = %d\n", data->time_die);
 	thread = (pthread_t *)malloc(sizeof(pthread_t) * data->num_philo);
 	i = 0;
-	while (i < data->num_philo - 1)
+	while (i < data->num_philo)
 	{
 		pthread_create(&thread[i], NULL, action, philo + i);
 		usleep(100);

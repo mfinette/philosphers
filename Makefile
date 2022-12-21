@@ -6,13 +6,13 @@
 #    By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 15:04:30 by mfinette          #+#    #+#              #
-#    Updated: 2022/12/21 09:47:07 by mfinette         ###   ########.fr        #
+#    Updated: 2022/12/21 11:06:22 by mfinette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CC		= cc
+CC		= cc -fsanitize=thread -g3
 CFLAGS	= -Wall -Wextra -Werror
 AR		= ar rcs
 RM		= @rm -f
@@ -42,7 +42,7 @@ OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)😳😎philosophers compiled!😎😳$(DEF_COLOR)"
-	@${CC} ${FLAGS} ${SRCS} -o ${NAME} -fsanitize=address -g3
+	@${CC} ${FLAGS} ${SRCS} -o ${NAME}
 
 
 clean:

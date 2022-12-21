@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:43:21 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 09:46:19 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:21:15 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_atoi(const char *str)
 
 unsigned long	get_time(void)
 {
-	struct timeval	time;
+	struct timeval		time;
 	unsigned long long	l;
 	unsigned long long	s;
 	unsigned long long	u;
@@ -66,4 +66,20 @@ unsigned long	get_time(void)
 	u = (time.tv_usec / 1000);
 	l = s + u;
 	return (l);
+}
+
+void	print(t_philo *philo, unsigned long time, char *action)
+{
+	pthread_mutex_lock(philo->print);
+	printf("%lums %d %s\n", time, philo->id, action);
+	pthread_mutex_unlock(philo->print);
+}
+
+void	clean_mutex(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->num_philo)
+		pthread_mutex_destroy(&philo->mutex[i++]);
 }

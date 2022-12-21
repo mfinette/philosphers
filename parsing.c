@@ -6,13 +6,11 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:40:48 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 10:13:42 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 11:18:11 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-
 
 int	check_args(int argc, char **argv)
 {
@@ -50,8 +48,8 @@ pthread_mutex_t *mutex, pthread_mutex_t *print)
 {
 	int	i;
 
-	i = 1;
-	while (i <= data->num_philo - 1)
+	i = 0;
+	while (i < data->num_philo)
 	{
 		philo[i].ate = 0;
 		philo[i].id = i;
@@ -73,7 +71,7 @@ void	init_parameters(t_philo *philo, t_const_philo *data)
 	if (!mutex)
 		return ;
 	while (i < data->num_philo)
-		if(pthread_mutex_init(&mutex[i++], 0))
+		if (pthread_mutex_init(&mutex[i++], 0))
 			return ;
 	if (pthread_mutex_init(&print, 0))
 		return ;
