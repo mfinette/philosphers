@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:37:22 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 08:16:52 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 09:45:12 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <assert.h>
+# include <time.h>
+# include <sys/time.h>
 
 typedef struct s_phil
 {
@@ -44,7 +46,7 @@ typedef struct s_philo
 int				check_args(int argc, char **argv);
 int				check_str(char *str);
 int				ft_atoi(const char *str);
-t_const_philo	*get_args(int argc, char **argv);
+t_const_philo	*get_args(t_const_philo *data, int argc, char **argv);
 unsigned long	get_time(void);
 void			init_parameters(t_philo *philo, t_const_philo *data);
 void			get_params(t_philo *philo, t_const_philo *data,

@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:43:21 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 07:55:49 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 09:46:19 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ int	ft_atoi(const char *str)
 	return ((int)result);
 }
 
-static	unsigned long	get_time(void)
+unsigned long	get_time(void)
 {
 	struct timeval	time;
-	unsigned long	l;
-	unsigned long	s;
-	unsigned long	u;
+	unsigned long long	l;
+	unsigned long long	s;
+	unsigned long long	u;
 
 	gettimeofday(&time, NULL);
 	s = (time.tv_sec * 1000);

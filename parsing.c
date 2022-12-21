@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:40:48 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 08:57:19 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/21 10:13:42 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,17 @@ int	check_args(int argc, char **argv)
 	return (1);
 }
 
-t_const_philo	*get_args(int argc, char **argv)
+t_const_philo	*get_args(t_const_philo *data, int argc, char **argv)
 {
-	t_const_philo	*data;
-	
-	data->total_ate = 0;
 	data->num_philo = ft_atoi(argv[1]);
 	data->time_die = ft_atoi(argv[2]);
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
+	data->total_ate = 0;
 	if (argc == 6)
 		data->must_eat = ft_atoi(argv[5]);
 	else
-		data->must_eat == -1;
+		data->must_eat = -1;
 	data->time = get_time();
 	return (data);
 }
@@ -53,7 +51,7 @@ pthread_mutex_t *mutex, pthread_mutex_t *print)
 	int	i;
 
 	i = 1;
-	while (i <= data->num_philo)
+	while (i <= data->num_philo - 1)
 	{
 		philo[i].ate = 0;
 		philo[i].id = i;
@@ -67,7 +65,7 @@ pthread_mutex_t *mutex, pthread_mutex_t *print)
 void	init_parameters(t_philo *philo, t_const_philo *data)
 {
 	pthread_mutex_t	*mutex;
-	pthread_mutex_t	*print;
+	pthread_mutex_t	print;
 	int				i;
 
 	i = 0;
@@ -76,8 +74,8 @@ void	init_parameters(t_philo *philo, t_const_philo *data)
 		return ;
 	while (i < data->num_philo)
 		if(pthread_mutex_init(&mutex[i++], 0))
-			return (0);
+			return ;
 	if (pthread_mutex_init(&print, 0))
 		return ;
-	get_params(philo, data, mutex, print);
+	get_params(philo, data, mutex, &print);
 }
