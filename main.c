@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:56:36 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 11:21:22 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:22:50 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ void	*action(void *philo_void)
 		pthread_mutex_lock(&philo->mutex[philo->id % philo->data->num_philo]);
 		print(philo, get_time() - philo->data->time, "has taken a fork");
 		print(philo, get_time() - philo->data->time, "is eating");
+		pthread_mutex_lock(&philo->eat[philo->id- 1]);
 		philo->ate += 1;
 		if (philo->ate == philo->data->must_eat)
 			philo->data->total_ate++;
-		usleep(philo->data->time_eat * 1000);
 		philo->last_meal = get_time();
+		pthread_mutex_unlock(&philo->eat[philo->id - 1]);
+		usleep(philo->data->time_eat * 1000);
 		pthread_mutex_unlock(&philo->mutex[philo->id - 1]);
 		pthread_mutex_unlock(&philo->mutex[philo->id % philo->data->num_philo]);
 		print(philo, get_time() - philo->data->time, "is sleeping");
@@ -45,8 +47,10 @@ void	live_and_die(t_philo *philo, t_const_philo *data)
 	int	i;
 
 	i = 0;
+	printf("philo->eat = %p\nphilo->data->total_ate = %p\n", &philo->ate, &philo->data->total_ate);
 	while (1)
 	{
+		pthread_mutex_lock(philo->eat + i);
 		if (philo[i].data->total_ate == philo[i].data->num_philo)
 		{
 			clean_mutex(philo);
@@ -59,6 +63,7 @@ void	live_and_die(t_philo *philo, t_const_philo *data)
 			clean_mutex(philo);
 			return ;
 		}
+		pthread_mutex_unlock(philo->eat + i);
 		i = (i + 1) % data->num_philo;
 		usleep(500);
 	}
@@ -93,6 +98,7 @@ int	main(int argc, char **argv)
 		usleep(100);
 		i++;
 	}
+	
 	live_and_die(philo, data);
 	free(thread);
 	return (0);

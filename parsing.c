@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:40:48 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 11:18:11 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:07:00 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_const_philo	*get_args(t_const_philo *data, int argc, char **argv)
 }
 
 void	get_params(t_philo *philo, t_const_philo *data,
-pthread_mutex_t *mutex, pthread_mutex_t *print)
+pthread_mutex_t *mutex, pthread_mutex_t *print, pthread_mutex_t *eat)
 {
 	int	i;
 
@@ -52,9 +52,10 @@ pthread_mutex_t *mutex, pthread_mutex_t *print)
 	while (i < data->num_philo)
 	{
 		philo[i].ate = 0;
-		philo[i].id = i;
+		philo[i].id = i + 1;
 		philo[i].mutex = mutex;
 		philo[i].print = print;
+		philo[i].eat = eat;
 		philo[i].data = data;
 		i++;
 	}
@@ -64,16 +65,22 @@ void	init_parameters(t_philo *philo, t_const_philo *data)
 {
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	print;
+	pthread_mutex_t	*eat;
 	int				i;
 
 	i = 0;
 	mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->num_philo);
+	eat = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * data->num_philo);
 	if (!mutex)
 		return ;
 	while (i < data->num_philo)
-		if (pthread_mutex_init(&mutex[i++], 0))
+	{
+		if (pthread_mutex_init(&mutex[i], 0))
 			return ;
+		if (pthread_mutex_init(&eat[i++], 0))
+			return ;
+	}
 	if (pthread_mutex_init(&print, 0))
 		return ;
-	get_params(philo, data, mutex, &print);
+	get_params(philo, data, mutex, &print, eat);
 }

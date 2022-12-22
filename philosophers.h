@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:37:22 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 11:21:35 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/22 13:49:02 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_philo
 	t_const_philo	*data;
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	*print;
+	pthread_mutex_t	*eat;
 	unsigned long	last_meal;
 }t_philo;
 
@@ -50,7 +51,7 @@ t_const_philo	*get_args(t_const_philo *data, int argc, char **argv);
 unsigned long	get_time(void);
 void			init_parameters(t_philo *philo, t_const_philo *data);
 void			get_params(t_philo *philo, t_const_philo *data, \
-pthread_mutex_t *mutex, pthread_mutex_t *print);
+pthread_mutex_t *mutex, pthread_mutex_t *print, pthread_mutex_t *eat);
 void			print(t_philo *philo, unsigned long time, char *action);
 void			clean_mutex(t_philo *philo);
 
