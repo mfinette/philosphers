@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:43:21 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/21 11:21:15 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/23 13:00:20 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ unsigned long	get_time(void)
 void	print(t_philo *philo, unsigned long time, char *action)
 {
 	pthread_mutex_lock(philo->print);
-	printf("%lums %d %s\n", time, philo->id, action);
+	printf("%lu %d %s\n", time, philo->id, action);
 	pthread_mutex_unlock(philo->print);
 }
 

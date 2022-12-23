@@ -6,7 +6,7 @@
 /*   By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 13:56:36 by mfinette          #+#    #+#             */
-/*   Updated: 2022/12/22 15:22:50 by mfinette         ###   ########.fr       */
+/*   Updated: 2022/12/23 13:04:50 by mfinette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	*action(void *philo_void)
 	philo = (t_philo *)philo_void;
 	if (philo->id % 2 == 0)
 		usleep(10);
-	philo->last_meal = get_time();
 	while (1)
 	{
+		print(philo, get_time() - philo->data->time, "is thinking");
 		pthread_mutex_lock(&philo->mutex[philo->id - 1]);
 		print(philo, get_time() - philo->data->time, "has taken a fork");
 		pthread_mutex_lock(&philo->mutex[philo->id % philo->data->num_philo]);
 		print(philo, get_time() - philo->data->time, "has taken a fork");
 		print(philo, get_time() - philo->data->time, "is eating");
-		pthread_mutex_lock(&philo->eat[philo->id- 1]);
+		pthread_mutex_lock(&philo->eat[philo->id - 1]);
 		philo->ate += 1;
 		if (philo->ate == philo->data->must_eat)
 			philo->data->total_ate++;
@@ -38,7 +38,6 @@ void	*action(void *philo_void)
 		pthread_mutex_unlock(&philo->mutex[philo->id % philo->data->num_philo]);
 		print(philo, get_time() - philo->data->time, "is sleeping");
 		usleep(philo->data->time_sleep * 1000);
-		print(philo, get_time() - philo->data->time, "is thinking");
 	}
 }
 
@@ -47,7 +46,6 @@ void	live_and_die(t_philo *philo, t_const_philo *data)
 	int	i;
 
 	i = 0;
-	printf("philo->eat = %p\nphilo->data->total_ate = %p\n", &philo->ate, &philo->data->total_ate);
 	while (1)
 	{
 		pthread_mutex_lock(philo->eat + i);
@@ -56,7 +54,7 @@ void	live_and_die(t_philo *philo, t_const_philo *data)
 			clean_mutex(philo);
 			return ;
 		}
-		if (get_time() - philo[i].last_meal > (unsigned long)data->time_die)
+		if (get_time() - data->time > (unsigned long)data->time_die + philo[i].last_meal)
 		{
 			usleep(100);
 			print(philo, get_time() - philo->data->time, "died");
@@ -89,7 +87,6 @@ int	main(int argc, char **argv)
 	if (!philo)
 		return (0);
 	init_parameters(philo, data);
-	printf("TIME BEFORE DYING = %d\n", data->time_die);
 	thread = (pthread_t *)malloc(sizeof(pthread_t) * data->num_philo);
 	i = 0;
 	while (i < data->num_philo)
@@ -98,7 +95,6 @@ int	main(int argc, char **argv)
 		usleep(100);
 		i++;
 	}
-	
 	live_and_die(philo, data);
 	free(thread);
 	return (0);

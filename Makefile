@@ -6,13 +6,13 @@
 #    By: mfinette <mfinette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/26 15:04:30 by mfinette          #+#    #+#              #
-#    Updated: 2022/12/22 13:43:54 by mfinette         ###   ########.fr        #
+#    Updated: 2022/12/22 16:06:19 by mfinette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CC		= cc -fsanitize=thread
+CC		= cc #-fsanitize=thread
 CFLAGS	= -Wall -Wextra -Werror
 AR		= ar rcs
 RM		= @rm -f
